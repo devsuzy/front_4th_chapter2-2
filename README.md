@@ -65,7 +65,7 @@
 - 로컬 스트리지를 모킹하여 독립적인 환경을 보장합니다.
 - `vi.fn()`을 통해 `getItem`과 `setItem` 메서드를 모킹합니다.
 
-```
+```javascript
   describe('useLocalStorage', () => {
     const key = 'testKey';
     const initialValue = { name: 'Test', quantity: 1 };
@@ -84,7 +84,7 @@
 ```
 
 #### 2. `renderHook`을 통해 훅 테스트
-```
+```javascript
   test('초기값이 올바르게 설정되어야 합니다.', () => {
     (localStorage.getItem as Mock).mockReturnValueOnce(null);
     const { result } = renderHook(() => useLocalStorage(key, initialValue));
@@ -95,7 +95,7 @@
 ```
 
 #### 3. `act`를 통해 상태 업데이트 테스트
-```
+```javascript
   test('setCartItem 호출 시 상태와 로컬 스토리지가 업데이트 되어야 합니다.', () => {
     const { result } = renderHook(() => useLocalStorage(key, initialValue));
 
@@ -115,7 +115,7 @@
 - useLocalStorage 커스텀 훅을 만들어 장바구니 로직에 적용하니, 기본과제 테스트 코드에서 오류가 발생
 - 테스트 코드에 `act` 과정에서 여러 상태 업데이트를 한번에 처리하여 업데이트 된 상태가 즉시 반영되지 않음
 
-```
+```javascript
   test('제품 수량을 업데이트해야 합니다', () => {
     const { result } = renderHook(() => useCart());
 
@@ -147,7 +147,7 @@
 > ❗️ 문제 해결 시도 방안
 - `act`를 각 상태 업데이트로 분리하여 상태 변경을 순차적으로 이룰 수 있도록 테스트 코드 변경
 
-```
+```javascript
   test('제품 수량을 업데이트해야 합니다', () => {
     const { result } = renderHook(() => useCart());
 
@@ -185,7 +185,7 @@
 > 🤔 문제 해결 방안에 대한 의문점
 
 - 현재 `useLocalStorage`에 `setItem`에서 로컬 스토리지를 초기화 처리를 했는데 왜 오류가 발생할까?
-```
+```typescript
   const setCartItem = (product: T | ((prev: T) => T)) => {
     try {
       const itemToStore = product instanceof Function ? product(storedItem) : product;
